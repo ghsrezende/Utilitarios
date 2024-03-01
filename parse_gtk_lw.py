@@ -38,7 +38,7 @@ def parse_hex_string(hex_string):
             "End Bit": byte_array[13:].hex()
         }
 
-    # Response Command Packet
+    # Packet Replied by Device
     elif protocol_number == 0x15:
 
         i = int(f"0x{byte_array[4]:02X}", 16)
@@ -88,7 +88,7 @@ def parse_hex_string(hex_string):
             "End Bit": byte_array[52:].hex(),
         }
 
-    # Location Packet
+    # Location Data Packet
     elif protocol_number == 0x17:
         specific_fields = {
             "GPS information" : {   
@@ -119,7 +119,7 @@ def parse_hex_string(hex_string):
             "End Bit": byte_array[49:].hex(),
         }
 
-    # Command Packet
+    # Packet send by Server
     elif protocol_number == 0x80:
 
         i = int(f"0x{byte_array[4]:02X}", 16)
