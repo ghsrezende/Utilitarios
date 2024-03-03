@@ -1,5 +1,5 @@
 import sys
-sys.path.append('./Utilitarios/packets')
+sys.path.append('./packets')
 
 import login
 import location
