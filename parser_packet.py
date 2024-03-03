@@ -154,20 +154,3 @@ def parse_hex_string(hex_string):
     parse_packet = {**common_fields}
 
     return parse_packet
-
-hex_input = input("Enter the packet to parse (or 'exit' to quit): ")
-
-while hex_input.lower() != 'sair':
-    try:
-        result = parse_hex_string(hex_input)
-        for key, value in result.items():
-            if isinstance(value, dict):
-                print(f'{key}:')
-                for sub_key, sub_value in value.items():
-                    print(f'    {sub_key}: {sub_value}')
-            else:
-                print(f'{key}: {value}')
-    except ValueError as e:
-        print("Erro:", e)
-
-    hex_input = input("Enter the packet to parse (or 'exit' to quit): ")
