@@ -1,4 +1,4 @@
-from util import battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage, device_information, timestamp, horimeter, course_status, alarm_type
+from util import battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage, device_information, timestamp, horimeter, course_status, alarm_type, language, gps_information, battery_voltage_level
 
 def alarm_packet(byte_array):
     parse_packet = {
@@ -18,7 +18,7 @@ def alarm_packet(byte_array):
             },
             "Number Satellites": {
                 "Value Hex": f"0x{byte_array[10]:02X}",
-                "Value": int(f"0x{byte_array[10]:02X}", 16),
+                "GPS Information" : gps_information(f"0x{byte_array[10]:02X}"),
             },
             "Latitude": {
                 "Value Hex": f"0x{byte_array[11:15].hex()}",
@@ -58,18 +58,15 @@ def alarm_packet(byte_array):
         },
         "Status Information": {
             "Device Information": device_information(byte_array[31]),
-            "Battery Voltage Level": {
-                "Value Hex": f"0x{byte_array[32]:02X}",
-                "Value": int(f"0x{byte_array[32]:02X}", 16),
-            },
+            "Battery Voltage Level": battery_voltage_level(f"0x{byte_array[32]:02X}"),
             "GSM Signal": {
                 "Value Hex": f"0x{byte_array[33]:02X}",
                 "Value": int(f"0x{byte_array[33]:02X}", 16),
             },
-            "Alarm Packet": alarm_type(byte_array[34]),
+            "Alarm Packet": alarm_type(f"0x{byte_array[34]:02X}"),
             "Language": {
+                "Description": language(byte_array[35]),
                 "Value Hex": f"0x{byte_array[35]:02X}",
-                "Value": int(f"0x{byte_array[35]:02X}", 16),
             },
             "Battery Voltage": {
                 "Value Hex": f"0x{byte_array[36:38].hex()}",

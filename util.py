@@ -234,3 +234,50 @@ def hex_to_ascii(byte_array):
     except Exception as e:
         print("Error:", e)
         return None
+    
+def language(hex_value):
+    """
+    Determines the language based on the hexadecimal value.
+    Args:
+        hex_value (str): The hexadecimal value representing the language.
+    Returns:
+        str: The language corresponding to the hexadecimal value.
+    """
+    lang = "Chinese" if hex_value == '0x01' else "English"
+    return lang
+
+def gps_information(hex_value):
+    """
+    Determines the length of GPS information and the number of the
+    satellites join in positioning based on the hexadecimal value.
+    Args:
+        hex_value (str): The hexadecimal value representing the GPS information.
+    Returns:
+        Length of GPS information and Number of the Satellites.
+    """
+    decimal_mapping = {'0': 0, '1': 1, '2': 2, '3': 3, '4': 4, '5': 5, '6': 6, '7': 7, '8': 8, '9': 9,
+                       'A': 10, 'B': 11, 'C': 12, 'D': 13, 'E': 14, 'F': 15}
+    result = {}
+    result["Length in bits"] = decimal_mapping.get(hex_value[2].upper(), hex_value[2])
+    result["Satellites"] = decimal_mapping.get(hex_value[3].upper(), hex_value[3])
+    
+    return result
+
+def battery_voltage_level(hex_string):
+    """Determines the battery voltage level based on a hexadecimal string.
+    Args:
+        hex_string: The hexadecimal string representing the code.
+    Returns:
+        A dictionary containing the battery voltage level description and hexadecimal value.
+    """
+    alarm_mapping = {
+        "0x00": {"description": "Lowest power and power off", "Value Hex": "0x00"},
+        "0x01": {"description": "Not enough power to dial a call or send messages", "Value Hex": "0x01"},
+        "0x02": {"description": "Low power and alarm", "Value Hex": "0x02"},
+        "0x03": {"description": "Lower power but can work normally", "Value Hex": "0x03"},
+        "0x04": {"description": "Work in good condition", "Value Hex": "0x04"},
+        "0x05": {"description": "Work in good condition", "Value Hex": "0x05"},
+        "0x06": {"description": "Work in good condition", "Value Hex": "0x06"},
+    }
+
+    return alarm_mapping.get(hex_string, {"description": "Unknown", "Value Hex": hex_string})

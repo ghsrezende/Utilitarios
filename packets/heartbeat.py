@@ -1,4 +1,4 @@
-from util import device_information
+from util import device_information, language
 def heartbeat_packet(byte_array):
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
@@ -25,8 +25,8 @@ def heartbeat_packet(byte_array):
                 "Value": int(f"0x{byte_array[7]:02X}", 16),
             },
             "Language": {
+                "Description": language(byte_array[8]),
                 "Value Hex": f"0x{byte_array[8]:02X}",
-                "Value": int(f"0x{byte_array[8]:02X}", 16),
             },
         },
         "Serial Number": {

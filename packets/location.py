@@ -1,4 +1,4 @@
-from util import battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage, device_information, timestamp, horimeter, course_status
+from util import battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage, device_information, timestamp, horimeter, course_status, gps_information
 
 def location_packet(byte_array):
     parse_packet = {
@@ -18,7 +18,7 @@ def location_packet(byte_array):
             },
             "Number Satellites": {
                 "Value Hex": f"0x{byte_array[10]:02X}",
-                "Value": int(f"0x{byte_array[10]:02X}", 16),
+                "GPS Information" : gps_information(f"0x{byte_array[10]:02X}"),               
             },
             "Latitude": {
                 "Value Hex": f"0x{byte_array[11:15].hex()}",
@@ -54,10 +54,7 @@ def location_packet(byte_array):
         },
         "Status Information": {
             "Device Information": device_information(byte_array[30]),
-            "Battery Voltage Level": {
-                "Value Hex": f"0x{byte_array[31]:02X}",
-                "Value": int(f"0x{byte_array[31]:02X}", 16),
-            },
+            "Battery Voltage Level": "Battery Voltage Level": battery_voltage_level(f"0x{byte_array[31]:02X}"),
             "GSM Signal": {
                 "Value Hex": f"0x{byte_array[32]:02X}",
                 "Value": int(f"0x{byte_array[32]:02X}", 16),
