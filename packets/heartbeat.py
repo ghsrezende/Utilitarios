@@ -1,4 +1,4 @@
-from util import device_information, language
+from util import device_information, language, battery_voltage_level
 def heartbeat_packet(byte_array):
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
@@ -12,10 +12,7 @@ def heartbeat_packet(byte_array):
         },
         "Status Information": {
             "Device Information": device_information(byte_array[4]),
-            "Battery Voltage Level": {
-                "Value Hex": f"0x{byte_array[5]:02X}",
-                "Value": int(f"0x{byte_array[5]:02X}", 16),
-            },
+            "Battery Voltage Level": battery_voltage_level(f"0x{byte_array[5]:02X}"),
             "GSM Signal": {
                 "Value Hex": f"0x{byte_array[6]:02X}",
                 "Value": int(f"0x{byte_array[6]:02X}", 16),
