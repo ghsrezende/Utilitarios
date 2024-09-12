@@ -118,16 +118,16 @@ def device_information(byte_array):
         "Value Hex": f"0x{byte_array:02X}",
         "Value Binary": binary_string,
         "Bit0": {
-            "Description": "Fortified" if binary_string[0] == '1' else "Not fortified",
-            "Value": binary_string[0],
+            "Description": "Fortified" if binary_string[7] == '1' else "Not fortified",
+            "Value": binary_string[7],
         },
         "Bit1": {
-            "Description": "ACC ON" if binary_string[1] == '1' else "ACC OFF",
-            "Value": binary_string[1],
+            "Description": "ACC ON" if binary_string[6] == '1' else "ACC OFF",
+            "Value": binary_string[6],
         },
         "Bit2": {
-            "Description": "Charged" if binary_string[2] == '1' else "Not Charged",
-            "Value": binary_string[2],
+            "Description": "Charged" if binary_string[5] == '1' else "Not Charged",
+            "Value": binary_string[5],
         },
         "Bit3 to Bit5": {
             "Description": {
@@ -136,16 +136,16 @@ def device_information(byte_array):
                 "010": "Cut-off alarm",
                 "011": "Low-power alarm",
                 "100": "SOS alarm",
-            }[binary_string[3:6]],
-            "Value": binary_string[3:6],
+            }[binary_string[2:5]],
+            "Value": binary_string[2:5],
         },
         "Bit6": {
-            "Description": "GPS Fix" if binary_string[6] == '1' else "GPS Not Fix",
-            "Value": binary_string[6],
+            "Description": "GPS Fix" if binary_string[1] == '1' else "GPS Not Fix",
+            "Value": binary_string[1],
         },
         "Bit7": {
-            "Description": "Output On" if binary_string[7] == '1' else "Output Off",
-            "Value": binary_string[7],
+            "Description": "Output On" if binary_string[0] == '1' else "Output Off",
+            "Value": binary_string[0],
         },
     }
     
@@ -205,10 +205,12 @@ def alarm_type(hex_string):
         "0x05": {"description": "Fence Out Alarm", "Value Hex": "0x05"},
         "0x06": {"description": "Speed Alarm", "Value Hex": "0x06"},
         "0x09": {"description": "Move Alarm", "Value Hex": "0x09"},
-        "0x0e": {"description": "Low Battery Alarm", "Value Hex": "0x0e"},
+        "0x0D": {"description": "SIMDETECT", "Value Hex": "0x0D"},
+        "0x0E": {"description": "Low Battery Alarm", "Value Hex": "0x0E"},
         "0x13": {"description": "Disassemble Alarm", "Value Hex": "0x13"},
         "0x14": {"description": "ACC On Alarm", "Value Hex": "0x14"},
         "0x15": {"description": "ACC Off Alarm", "Value Hex": "0x15"},
+        "0x18": {"description": "Change Status Input", "Value Hex": "0x18"},
         "0x26": {"description": "Rapid Acceleration Alarm", "Value Hex": "0x26"},
         "0x27": {"description": "Rapid Deceleration Alarm", "Value Hex": "0x27"},
         "0x28": {"description": "Sharp Turn Alarm", "Value Hex": "0x28"},
