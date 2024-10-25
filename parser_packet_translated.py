@@ -38,7 +38,7 @@ def parse_hex_string_translated(hex_string):
         return parse_packet
     
     # Location Data Packet
-    elif protocol_number == 0x17:
+    elif protocol_number == 0x12:
         parse_packet = location.location_packet(byte_array)
         return parse_packet
     

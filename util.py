@@ -111,8 +111,8 @@ def device_information(byte_array):
             * Descriptions and values for each bit in the byte array.
     """
     # Convert the byte value to a binary string with zero-padding to 8 bits.
-    binary_string = bin(byte_array)[2:].zfill(8)  # Use first byte for device info
-
+    #binary_string = bin(byte_array)[2:].zfill(8)  # Use first byte for device info
+    binary_string = ''.join(reversed(bin(byte_array)[2:].zfill(8)))
     # Map each binary digit to its corresponding description in the dictionary.
     binary_mapping = {
         "Value Hex": f"0x{byte_array:02X}",
@@ -205,6 +205,8 @@ def alarm_type(hex_string):
         "0x05": {"description": "Fence Out Alarm", "Value Hex": "0x05"},
         "0x06": {"description": "Speed Alarm", "Value Hex": "0x06"},
         "0x09": {"description": "Move Alarm", "Value Hex": "0x09"},
+        "0x0c": {"description": "External Battery Connected", "Value Hex": "0x0c"},
+        "0x0d": {"description": "Sim Card removed Alarm", "Value Hex": "0x0d"},
         "0x0e": {"description": "Low Battery Alarm", "Value Hex": "0x0e"},
         "0x13": {"description": "Disassemble Alarm", "Value Hex": "0x13"},
         "0x14": {"description": "ACC On Alarm", "Value Hex": "0x14"},
