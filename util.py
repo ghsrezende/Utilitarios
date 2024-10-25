@@ -205,14 +205,9 @@ def alarm_type(hex_string):
         "0x05": {"description": "Fence Out Alarm", "Value Hex": "0x05"},
         "0x06": {"description": "Speed Alarm", "Value Hex": "0x06"},
         "0x09": {"description": "Move Alarm", "Value Hex": "0x09"},
-<<<<<<< HEAD
         "0x0c": {"description": "External Battery Connected", "Value Hex": "0x0c"},
         "0x0d": {"description": "Sim Card removed Alarm", "Value Hex": "0x0d"},
-        "0x0e": {"description": "Low Battery Alarm", "Value Hex": "0x0e"},
-=======
-        "0x0D": {"description": "SIMDETECT", "Value Hex": "0x0D"},
         "0x0E": {"description": "Low Battery Alarm", "Value Hex": "0x0E"},
->>>>>>> 09a16c89434ed5b4e5e71089c0f0ce20e7288aaf
         "0x13": {"description": "Disassemble Alarm", "Value Hex": "0x13"},
         "0x14": {"description": "ACC On Alarm", "Value Hex": "0x14"},
         "0x15": {"description": "ACC Off Alarm", "Value Hex": "0x15"},
