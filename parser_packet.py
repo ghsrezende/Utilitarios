@@ -14,6 +14,16 @@ def parse_hex_string(hex_string):
 
     specific_fields = {}
 
+    # Verifica se o tamanho do pacote é exatamente 20
+    if len(hex_string) == 20:
+        specific_fields = {
+            "Serial Number": byte_array[4:6].hex(),
+            "CRC": byte_array[6:8].hex(),
+            "End Bit": byte_array[8:].hex()
+        }
+        common_fields.update(specific_fields)
+        return {**common_fields}  # Retorna imediatamente se o pacote tiver 20 caracteres
+
     # Login Packet
     if protocol_number == 0x01:
         specific_fields = {
@@ -40,12 +50,11 @@ def parse_hex_string(hex_string):
 
     # Packet Replied by Device
     elif protocol_number == 0x15:
-
         i = int(f"0x{byte_array[4]:02X}", 16)
         j = i - 4
 
         specific_fields = {
-            "Lenght of Command": f"0x{byte_array[4]:02X}",
+            "Length of Command": f"0x{byte_array[4]:02X}",
             "Server Flag Bit": byte_array[5:9].hex(),
             "Command Content": byte_array[9:j+9].hex(),
             "Reserved": byte_array[j+9:j+11].hex(),
@@ -53,11 +62,11 @@ def parse_hex_string(hex_string):
             "CRC": byte_array[j+13:j+15].hex(),
             "End Bit": byte_array[j+15:].hex()
         }
-    
+
     # Alarm Packet
     elif protocol_number == 0x16:
         specific_fields = {
-            "GPS information" : {   
+            "GPS information": {   
                 "Date Time": byte_array[4:10].hex(),
                 "Number Satellites": f"0x{byte_array[10]:02X}",
                 "Latitude": byte_array[11:15].hex(),
@@ -65,7 +74,7 @@ def parse_hex_string(hex_string):
                 "Speed": f"0x{byte_array[19]:02X}",
                 "Course Status": byte_array[20:22].hex()
             },
-            "LBS Information":  {            
+            "LBS Information": {            
                 "LBS": f"0x{byte_array[22]:02X}",
                 "MCC": byte_array[23:25].hex(),
                 "MNC": f"0x{byte_array[25]:02X}",
@@ -91,7 +100,7 @@ def parse_hex_string(hex_string):
     # Location Data Packet
     elif protocol_number == 0x17:
         specific_fields = {
-            "GPS information" : {   
+            "GPS information": {   
                 "Date Time": byte_array[4:10].hex(),
                 "Number Satellites": f"0x{byte_array[10]:02X}",
                 "Latitude": byte_array[11:15].hex(),
@@ -99,13 +108,13 @@ def parse_hex_string(hex_string):
                 "Speed": f"0x{byte_array[19]:02X}",
                 "Course Status": byte_array[20:22].hex()
             },
-            "LBS Information":  {
+            "LBS Information": {
                 "MCC": byte_array[22:24].hex(),
                 "MNC": f"0x{byte_array[24]:02X}",
                 "LAC": byte_array[25:27].hex(),
                 "Cell ID": byte_array[27:30].hex()
             },
-            "Status Information":{
+            "Status Information": {
                 "Device Information": f"0x{byte_array[30]:02X}",
                 "Battery Voltage Level": f"0x{byte_array[31]:02X}",
                 "GSM Signal": f"0x{byte_array[32]:02X}",
@@ -119,14 +128,46 @@ def parse_hex_string(hex_string):
             "End Bit": byte_array[49:].hex(),
         }
 
-    # Packet send by Server
+    # Status Packet
+    elif protocol_number == 0x30:
+        specific_fields = {
+            "Device ID": byte_array[4:12].hex(),
+            "GPS information": {   
+                "Date Time": byte_array[12:18].hex(),
+                "Number Satellites": f"0x{byte_array[18]:02X}",
+                "Latitude": byte_array[19:23].hex(),
+                "Longitude": byte_array[23:27].hex(),
+                "Speed": f"0x{byte_array[27]:02X}",
+                "Course Status": byte_array[28:30].hex()
+            },
+            "Status Information": {
+                "Device Information": f"0x{byte_array[30]:02X}",
+                "Battery Voltage Level": f"0x{byte_array[31]:02X}",
+                "GSM Signal": f"0x{byte_array[32]:02X}",
+                "Battery Voltage": byte_array[33:35].hex(),
+                "External Voltage": byte_array[35:37].hex()
+            },
+            "Mileage": byte_array[37:41].hex(),
+            "Horimeter": byte_array[41:45].hex(),
+            "Connection Mode": f"0x{byte_array[45]:02X}",
+            "Resets Count": byte_array[46:48].hex(),
+            "ICCID": byte_array[48:58].hex(),
+            "MAIN SERVER": byte_array[58:93].hex(),
+            "APN": byte_array[93:128].hex(),
+            "HW Version": byte_array[128:148].hex(),
+            "SW Version": byte_array[148:168].hex(),
+            "Serial Number": byte_array[168:170].hex(),
+            "CRC": byte_array[170:172].hex(),
+            "End Bit": byte_array[172:].hex(),
+        }
+    
+    # Packet sent by Server
     elif protocol_number == 0x80:
-
         i = int(f"0x{byte_array[4]:02X}", 16)
         j = i - 4
 
         specific_fields = {
-            "Lenght of Command": f"0x{byte_array[4]:02X}",
+            "Length of Command": f"0x{byte_array[4]:02X}",
             "Server Flag Bit": byte_array[5:9].hex(),
             "Command Content": byte_array[9:j+9].hex(),
             "Serial Number": byte_array[j+9:j+11].hex(),
@@ -138,19 +179,16 @@ def parse_hex_string(hex_string):
     elif protocol_number == 0x94:
         specific_fields = {
             "FLAG": f"0x{byte_array[5]:02X}",
-            "IMEI":byte_array[6:14].hex(),
-            "IMSI":byte_array[14:22].hex(),
-            "ICCID":byte_array[22:32].hex(),
+            "IMEI": byte_array[6:14].hex(),
+            "IMSI": byte_array[14:22].hex(),
+            "ICCID": byte_array[22:32].hex(),
             "Serial Number": byte_array[32:34].hex(),
             "CRC": byte_array[34:36].hex(),
             "End Bit": byte_array[36:].hex(),
         }
 
-
     else:
-        raise ValueError("Unknown packet. Supports only packets 0x01, 0x13, 0x15, 0x16, 0x17, 0x80, and 0x94.")
+        raise ValueError("Unknown packet. Supports only packets 0x01, 0x13, 0x15, 0x16, 0x17, 0x30, 0x80, and 0x94.")
 
     common_fields.update(specific_fields)
-    parse_packet = {**common_fields}
-
-    return parse_packet
+    return {**common_fields}

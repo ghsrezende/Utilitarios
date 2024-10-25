@@ -8,6 +8,7 @@ import replied_by_device
 import send_by_server
 import iccid
 import alarm
+import status
 
 def parse_hex_string_translated(hex_string):
     hex_string = hex_string.lower().replace(" ", "")
@@ -17,45 +18,23 @@ def parse_hex_string_translated(hex_string):
     byte_array = bytearray.fromhex(hex_string)
     protocol_number = byte_array[3]
 
-    # Login Packet
-    if protocol_number == 0x01:
-        parse_packet = login.login_packet(byte_array)
-        return parse_packet
+    # Seleciona a função correta com base no protocolo
+    packet_parsers = {
+        0x01: login.login_packet,
+        0x13: heartbeat.heartbeat_packet,
+        0x15: replied_by_device.replied_by_device,
+        0x16: alarm.alarm_packet,
+        0x17: location.location_packet,
+        0x30: status.status_device_packet,
+        0x80: send_by_server.send_by_server,
+        0x94: iccid.iccid_packet,
+    }
 
-    # Heartbeat Packet
-    elif protocol_number == 0x13:
-        parse_packet = heartbeat.heartbeat_packet(byte_array)
-        return parse_packet
-
-    # Packet Replied by Device
-    elif protocol_number == 0x15:
-        parse_packet = replied_by_device.replied_by_device(byte_array)
-        return parse_packet
+    # Obtém a função correta do dicionário
+    parse_packet_func = packet_parsers.get(protocol_number)
+    if parse_packet_func:
+        return parse_packet_func(byte_array)
     
-    # Alarm Packet
-    elif protocol_number == 0x16:
-        parse_packet = alarm.alarm_packet(byte_array)
-        return parse_packet
-    
-    # Location Data Packet
-    elif protocol_number == 0x12:
-        parse_packet = location.location_packet(byte_array)
-        return parse_packet
-    
-    # Status Data Packet
-    elif protocol_number == 0x30:
-        parse_packet = status.status_packet(byte_array)
-        return parse_packet
-    
-    # Packet send by Server
-    elif protocol_number == 0x80:
-        parse_packet = send_by_server.send_by_server(byte_array)
-        return parse_packet
-
-    # ICCID Packet
-    elif protocol_number == 0x94:
-        parse_packet = iccid.iccid_packet(byte_array)
-        return parse_packet
-
-    else:
-        raise ValueError("Unknown packet. Supports only packets 0x01, 0x13, 0x15, 0x16, 0x17, 0x80, and 0x94.")
+    raise ValueError(
+        "Unknown packet type. Supported packet types are: 0x01, 0x13, 0x15, 0x16, 0x17, 0x30, 0x80, and 0x94."
+    )
