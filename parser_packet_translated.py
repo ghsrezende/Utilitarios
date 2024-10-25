@@ -42,6 +42,11 @@ def parse_hex_string_translated(hex_string):
         parse_packet = location.location_packet(byte_array)
         return parse_packet
     
+    # Status Data Packet
+    elif protocol_number == 0x30:
+        parse_packet = status.status_packet(byte_array)
+        return parse_packet
+    
     # Packet send by Server
     elif protocol_number == 0x80:
         parse_packet = send_by_server.send_by_server(byte_array)
