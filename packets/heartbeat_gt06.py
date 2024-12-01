@@ -1,9 +1,8 @@
 from utils.util import (
-    device_information, language, battery_voltage_level
+    device_information, language, battery_voltage_level, alarm_type_gtklite
 )
 
-def translated_heartbeat_packet(byte_array):
-
+def translated_heartbeat_packet_gt06(byte_array):
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
         "Packet Length": {
@@ -21,9 +20,9 @@ def translated_heartbeat_packet(byte_array):
                 "Value Hex": f"0x{byte_array[6]:02X}",
                 "Value": int(f"0x{byte_array[6]:02X}", 16),
             },
-            "External Voltage": {
+            "Alarm": {
                 "Value Hex": f"0x{byte_array[7]:02X}",
-                "Value": int(f"0x{byte_array[7]:02X}", 16),
+                "Value": alarm_type_gtklite(f"0x{byte_array[7]:02X}"),
             },
             "Language": {
                 "Description": language(byte_array[8]),
@@ -40,7 +39,7 @@ def translated_heartbeat_packet(byte_array):
 
     return parse_packet
 
-def parse_heartbeat_packet(byte_array):
+def parse_heartbeat_packet_gt06(byte_array):
 
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
@@ -50,7 +49,7 @@ def parse_heartbeat_packet(byte_array):
             "Device Information": f"0x{byte_array[4]:02X}",
             "Battery Voltage Level": f"0x{byte_array[5]:02X}",
             "GSM Signal": f"0x{byte_array[6]:02X}",
-            "External Voltage": f"0x{byte_array[7]:02X}",
+            "Alarm": f"0x{byte_array[7]:02X}",
             "Language": f"0x{byte_array[8]:02X}",
         },
         "Serial Number": byte_array[9:11].hex(),

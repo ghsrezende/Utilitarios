@@ -1,6 +1,10 @@
-from util import battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage, device_information, timestamp, horimeter, course_status, gps_information, battery_voltage_level, hex_to_ascii
+from utils.util import (
+    battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage,
+    device_information, timestamp, horimeter, course_status, gps_information,
+    battery_voltage_level, hex_to_ascii
+)
 
-def status_device_packet(byte_array):
+def translated_status_device_packet(byte_array):
     if len(byte_array) < 174:
         raise ValueError(f"O array de bytes está incompleto. Tamanho atual: {len(byte_array)} bytes")
 
@@ -94,6 +98,45 @@ def status_device_packet(byte_array):
             "Value Hex": f"0x{byte_array[168:170].hex()}",
             "Value": int(f"0x{byte_array[168:170].hex()}", 16)
         },
+        "CRC": byte_array[170:172].hex(),
+        "End Bit": byte_array[172:].hex(),
+    }
+
+    return parse_packet
+
+
+def parse_status_packet(byte_array):
+
+    parse_packet = {
+        "Start Bit": byte_array[:2].hex(),
+        "Packet Length": f"0x{byte_array[2]:02X}",
+        "Protocol Number": f"0x{byte_array[3]:02X}",
+        "Device ID": byte_array[4:12].hex(),
+        "GPS information": {
+            "Date Time": byte_array[12:18].hex(),
+            "Number Satellites": f"0x{byte_array[18]:02X}",
+            "Latitude": byte_array[19:23].hex(),
+            "Longitude": byte_array[23:27].hex(),
+            "Speed": f"0x{byte_array[27]:02X}",
+            "Course Status": byte_array[28:30].hex()
+        },
+        "Status Information": {
+            "Device Information": f"0x{byte_array[30]:02X}",
+            "Battery Voltage Level": f"0x{byte_array[31]:02X}",
+            "GSM Signal": f"0x{byte_array[32]:02X}",
+            "Battery Voltage": byte_array[33:35].hex(),
+            "External Voltage": byte_array[35:37].hex()
+        },
+        "Mileage": byte_array[37:41].hex(),
+        "Horimeter": byte_array[41:45].hex(),
+        "Connection Mode": f"0x{byte_array[45]:02X}",
+        "Resets Count": byte_array[46:48].hex(),
+        "ICCID": byte_array[48:58].hex(),
+        "MAIN SERVER": byte_array[58:93].hex(),
+        "APN": byte_array[93:128].hex(),
+        "HW Version": byte_array[128:148].hex(),
+        "SW Version": byte_array[148:168].hex(),
+        "Serial Number": byte_array[168:170].hex(),
         "CRC": byte_array[170:172].hex(),
         "End Bit": byte_array[172:].hex(),
     }

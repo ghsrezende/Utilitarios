@@ -1,10 +1,9 @@
 from utils.util import (
-    battery_voltage, bytes_to_latitude, bytes_to_longitude, external_voltage,
-    device_information, timestamp, horimeter, course_status, alarm_type,
-    language, gps_information, battery_voltage_level
+    bytes_to_latitude, bytes_to_longitude, device_information, timestamp,
+    course_status, alarm_type, gps_information, battery_voltage_level, external_voltage_gtklite
 )
 
-def translated_alarm_packet(byte_array):
+def translated_alarm_packet_gt06(byte_array):
 
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
@@ -69,39 +68,23 @@ def translated_alarm_packet(byte_array):
                 "Value": int(f"0x{byte_array[33]:02X}", 16),
             },
             "Alarm Packet": alarm_type(f"0x{byte_array[34]:02X}"),
-            "Language": {
-                "Description": language(byte_array[35]),
+            "External Voltage": {
+                "Description": external_voltage_gtklite(byte_array[35]),
                 "Value Hex": f"0x{byte_array[35]:02X}",
             },
-            "Battery Voltage": {
-                "Value Hex": f"0x{byte_array[36:38].hex()}",
-                "Value": battery_voltage(byte_array[36:38]),
-            },
-            "External Voltage": {
-                "Value Hex": f"0x{byte_array[38:40].hex()}",
-                "Value": external_voltage(byte_array[38:40]),
-            },
-        },
-        "Mileage": {
-            "Value Hex": f"0x{byte_array[40:44].hex()}",
-            "Value": int(f"0x{byte_array[40:44].hex()}", 16),
-        },
-        "Horimeter": {
-            "Value Hex": f"0x{byte_array[44:48].hex()}",
-            "Value": horimeter(byte_array[44:48]),
         },
         "Serial Number": {
-            "Value Hex": f"0x{byte_array[48:50].hex()}",
-            "Value": int(f"0x{byte_array[48:50].hex()}", 16),
+            "Value Hex": f"0x{byte_array[36:38].hex()}",
+            "Value": int(f"0x{byte_array[36:38].hex()}", 16),
         },
-        "CRC": byte_array[50:52].hex(),
-        "End Bit": byte_array[52:].hex(),
+        "CRC": byte_array[38:40].hex(),
+        "End Bit": byte_array[40:].hex(),
     }
 
     return parse_packet
 
 
-def parse_alarm_packet(byte_array):
+def parse_alarm_packet_gt06(byte_array):
 
     parse_packet = {
         "Start Bit": byte_array[:2].hex(),
@@ -127,15 +110,11 @@ def parse_alarm_packet(byte_array):
             "Battery Voltage Level": f"0x{byte_array[32]:02X}",
             "GSM Signal": f"0x{byte_array[33]:02X}",
             "Alarm Packet": f"0x{byte_array[34]:02X}",
-            "Language": f"0x{byte_array[35]:02X}",
-            "Battery Voltage": byte_array[36:38].hex(),
-            "External Voltage": byte_array[38:40].hex()
+            "External Voltage": f"0x{byte_array[35]:02X}",
         },
-        "Mileage": byte_array[40:44].hex(),
-        "Horimeter": byte_array[44:48].hex(),
-        "Serial Number": byte_array[48:50].hex(),
-        "CRC": byte_array[50:52].hex(),
-        "End Bit": byte_array[52:].hex(),
+        "Serial Number": byte_array[36:38].hex(),
+        "CRC": byte_array[38:40].hex(),
+        "End Bit": byte_array[40:].hex(),
     }
 
     return parse_packet
