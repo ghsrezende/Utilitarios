@@ -10,8 +10,14 @@ from .alarm_gt06 import parse_alarm_packet_gt06
 from .alarm_gt06 import translated_alarm_packet_gt06
 from .location import parse_location_data_packet
 from .location import translated_location_packet
-from .location_gt06 import parse_location_data_packet_gt06
-from .location_gt06 import translated_location_packet_gt06
+from .location_gt06 import parse_location_data_packet_gt06_0X0A
+from .location_gt06 import parse_location_data_packet_gt06_0x12
+from .location_gt06 import parse_location_data_packet_gt06_0x22
+from .location_gt06 import parse_location_data_packet_gt06_0x32
+from .location_gt06 import translated_location_packet_gt06_0x0A
+from .location_gt06 import translated_location_packet_gt06_0x12
+from .location_gt06 import translated_location_packet_gt06_0x22
+from .location_gt06 import translated_location_packet_gt06_0x32
 from .status import parse_status_packet
 from .status import translated_status_device_packet
 from .iccid import parse_iccid_packet
@@ -34,8 +40,14 @@ __all__ = [
     "translated_alarm_packet_gt06",
     "parse_location_data_packet",
     "translated_location_packet",
-    "parse_location_data_packet_gt06",
-    "translated_location_packet_gt06",
+    "parse_location_data_packet_gt06_0X0A",
+    "parse_location_data_packet_gt06_0x12",
+    "parse_location_data_packet_gt06_0x22",
+    "parse_location_data_packet_gt06_0x32",
+    "translated_location_packet_gt06_0xA",
+    "translated_location_packet_gt06_0x12",
+    "translated_location_packet_gt06_0x22",
+    "translated_location_packet_gt06_0x32",
     "parse_status_packet",
     "translated_status_device_packet",
     "parse_iccid_packet",

@@ -1,6 +1,6 @@
 from utils.util import (
     bytes_to_latitude, bytes_to_longitude, device_information, timestamp,
-    course_status, alarm_type, gps_information, battery_voltage_level, external_voltage_gtklite
+    course_status, alarm_type, gps_information, battery_voltage_level, language
 )
 
 def translated_alarm_packet_gt06(byte_array):
@@ -68,8 +68,8 @@ def translated_alarm_packet_gt06(byte_array):
                 "Value": int(f"0x{byte_array[33]:02X}", 16),
             },
             "Alarm Packet": alarm_type(f"0x{byte_array[34]:02X}"),
-            "External Voltage": {
-                "Description": external_voltage_gtklite(byte_array[35]),
+            "Language": {
+                "Description": language(byte_array[35]),
                 "Value Hex": f"0x{byte_array[35]:02X}",
             },
         },
@@ -110,7 +110,7 @@ def parse_alarm_packet_gt06(byte_array):
             "Battery Voltage Level": f"0x{byte_array[32]:02X}",
             "GSM Signal": f"0x{byte_array[33]:02X}",
             "Alarm Packet": f"0x{byte_array[34]:02X}",
-            "External Voltage": f"0x{byte_array[35]:02X}",
+            "Language": f"0x{byte_array[35]:02X}",
         },
         "Serial Number": byte_array[36:38].hex(),
         "CRC": byte_array[38:40].hex(),

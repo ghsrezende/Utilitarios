@@ -12,9 +12,9 @@ class Protocols(Enum):
 
     # GT06 específico
     LOCATION_GT06_V1 = 0x12
-    LOCATION_GT06_V2 = 0x22
-    LOCATION_GT06_V3 = 0x32
-    LOCATION_GT06_V4 = 0x0A
+    LOCATION_GT06_V3 = 0x22
+    LOCATION_GT06_V4 = 0x32
+    LOCATION_GT06_V2 = 0x0A
     HEARTBEAT_GT06 = 0x13
     ALARM_GT06 = 0x16
 

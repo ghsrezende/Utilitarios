@@ -32,7 +32,10 @@ def course_status(byte_array):
     binary_mapping = {
         "Value Hex": f"0x{byte_array.hex()}",
         "Value Binary": binary_string,
-        "BYTE_1 Bit7": "Not used",
+        "BYTE_1 Bit7": {
+            "Description": "Input 2 On" if binary_string[0] == '1' else "Input 2 Off",
+            "Value": binary_string[0],
+        },
         "BYTE_1 Bit6": {
             "Description": "Input On" if binary_string[1] == '1' else "Input Off",
             "Value": binary_string[1],

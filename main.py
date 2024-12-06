@@ -21,7 +21,7 @@ def sub_menu():
         print("\nChoose an option:")
         print("1. Parse packet and display fields")
         print("2. Parse packet and display translated fields")
-        print("3. Exit")
+        print("3. Return")
 
         choice = input("Enter your choice: ")
 
@@ -47,7 +47,7 @@ def sub_menu_gt06():
         print("\nChoose an option:")
         print("1. Parse packet and display fields")
         print("2. Parse packet and display translated fields")
-        print("3. Exit")
+        print("3. Return")
 
         choice = input("Enter your choice: ")
 
